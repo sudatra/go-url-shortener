@@ -33,7 +33,10 @@ func ShortenURL(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid URL"}); 
 	}
 
-	// TODO: check for domain error
+	if !helpers.RemoveDomainError(body.URL) {
+		return c.Status(fiber.StatusServiceUnavailable).JSON(fiber.Map{"error": "Error in Domain"});
+	}
 
 	// TODO: enforce https, SSL
+	body.URL = helpers.EnforceHTTP(body.URL);
 }
