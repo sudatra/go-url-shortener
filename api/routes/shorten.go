@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/sudatra/go-url-shortener/database"
 	"github.com/sudatra/go-url-shortener/helpers"
+	"github.com/asaskevich/govalidator"
 )
 
 type request struct {
@@ -50,7 +51,7 @@ func ShortenURL(c *fiber.Ctx) error {
 		}
 	}
 
-	if !govalidator.IsUrl(body.URL) {
+	if !govalidator.IsURL(body.URL) {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid URL"}); 
 	}
 
